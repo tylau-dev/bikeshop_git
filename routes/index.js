@@ -120,7 +120,7 @@ router.post('/create-checkout-session', async(req, res) => {
         payment_method_types: ["card"],
         line_items: basketList,
         mode: 'payment',
-        success_url: 'http://localhost:3000/confirm',
+        success_url: 'confirm',
         cancel_url: 'http://localhost:3000',
     });
     res.json({ id: session.id });
