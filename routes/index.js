@@ -1,6 +1,9 @@
 var express = require('express');
 var router = express.Router();
 
+const Stripe = require('stripe');
+const stripe = Stripe('sk_test_51I9owlAkRzH7t3WnfFEJr1wZZoztlBecdPMC2dB4gTs6zqdaVuWA1MaLGfGwAQJUQG3YNdKULvdYWr34xAtfmnjU00Y1Op6qCl');
+
 // class Bike {
 //     constructor(name, img, price) {
 //         this._name = name;
@@ -42,6 +45,9 @@ router.get('/', function(req, res, next) {
     res.render('index', { dataBike });
 });
 
+router.get('/confirm', function(req, res, next) {
+    res.render('confirm', {});
+});
 
 // var dataCardBike = [
 //     { row: 1, name: "BIKO45", picture: "/images/bike-1.jpg", qty: 1, price: 679 },
@@ -95,5 +101,31 @@ router.post('/update-shop', function(req, res) {
     res.render('shop', { dataCardBike: req.session.dataCardBike });
 });
 
+
+router.post('/create-checkout-session', async(req, res) => {
+    var basketList = []
+    for (i = 0; i < req.session.dataCardBike.length; i++) {
+        basketList.push({
+            price_data: {
+                currency: "eur",
+                product_data: {
+                    name: req.session.dataCardBike[i].name,
+                },
+                unit_amount: parseInt(req.session.dataCardBike[i].price) * 100,
+            },
+            quantity: parseInt(req.session.dataCardBike[i].qty),
+        }, )
+    }
+    const session = await stripe.checkout.sessions.create({
+        payment_method_types: ["card"],
+        line_items: basketList,
+        mode: 'payment',
+        success_url: 'http://localhost:3000/confirm',
+        cancel_url: 'http://localhost:3000',
+    });
+    res.json({ id: session.id });
+});
+
+// app.listen(4242, () => console.log(`Listening on port ${4242}!`));
 
 module.exports = router;
