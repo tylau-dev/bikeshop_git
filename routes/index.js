@@ -120,8 +120,8 @@ router.post('/create-checkout-session', async(req, res) => {
         payment_method_types: ["card"],
         line_items: basketList,
         mode: 'payment',
-        success_url: '/confirm',
-        cancel_url: '/',
+        success_url: 'https://stark-citadel-26838.herokuapp.com/confirm',
+        cancel_url: 'https://stark-citadel-26838.herokuapp.com/',
     });
     res.json({ id: session.id });
 });
