@@ -12,12 +12,9 @@
 </head>
 
 <body>
-
     <div class="container-fluid">
-
         <!-- HEADER -->
         <div class="row">
-
             <nav class=" header col-12 navbar navbar-light bg-dark">
                 <a class="navbar" href="/">
                     <img src="/images/bike-logo.svg" width="50" height="50" class="logo" alt=""> The Bike Shop Experience
@@ -36,27 +33,69 @@
 
         </div>
 
+
+
         <div class="row">
+            <div class="col-xs-12 col-sm-6 col-md-4">
+                <div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
+                    <div class="carousel-inner">
+                        <% var firstBike = true
+                    for (j = 0; j < dataBike.length; j++) {
+                        if (dataBike[j].mea) { 
+                            var classActive = ''
+                            if (firstBike) {
+                        classActive="carousel-item active"
+                        firstBike = false}%>
+                            <div class="carousel-item <%=classActive%>">
+                                <img src=<%=dataBike[j].url%> class="d-block w-100">
+                                <div class="card-body text-center">
+                                    <h5 class="card-title">
+                                        <%= dataBike[j].name%>
+                                    </h5>
+                                    <p>
+                                        <%= dataBike[j].price%>€
+                                    </p>
+                                </div>
+                            </div>
+                            <%}}%>
+                    </div>
+                    <a class="carousel-control-prev" href="#carouselExampleControls" role="button" data-slide="prev">
+                        <span class="carousel-control-prev-icon bg-secondary" aria-hidden="true"></span>
+                    </a>
+                    <a class="carousel-control-next" href="#carouselExampleControls" role="button" data-slide="next">
+                        <span class="carousel-control-next-icon bg-secondary" aria-hidden="true"></span>
+                    </a>
+                </div>
+            </div>
+
             <% for (i=0; i < dataBike.length; i++) {
                 %>
                 <div class="col-xs-12 col-sm-6 col-md-4">
                     <div class="card">
-                        <img src=<%=dataBike[i].url%> class="card-img-top">
+                        <img class="card-img-top" src=<%=dataBike[i].url%>>
                         <div class="card-body text-center">
                             <h5 class="card-title">
                                 <%= dataBike[i].name%>
                             </h5>
-                            <%= dataBike[i].price%>€
-                                <a href="/add-basket?name=<%=dataBike[i].name%>&img=<%=dataBike[i].url%>&price=<%= dataBike[i].price%>&qty=1" class="btn btn-outline-info btn-sm">Buy</a>
+                            <p>
+                                <%= dataBike[i].price%>€
+                            </p>
+                            <p>
+                                Quantity:
+                                <%=dataBike[i].quantity%>
+                            </p>
+
+                            <% if (dataBike[i].quantity === 0) {%>
+                                <a href="/add-basket?name=<%=dataBike[i].name%>&img=<%=dataBike[i].url%>&price=<%= dataBike[i].price%>&qty=1" class="btn btn-outline-info btn-sm disabled" aria-disabled="true">Buy</a>
+                                <%} else {%>
+                                    <a href="/add-basket?name=<%=dataBike[i].name%>&img=<%=dataBike[i].url%>&price=<%= dataBike[i].price%>&qty=1" class="btn btn-outline-info btn-sm">Buy</a>
+                                    <%}%>
                         </div>
                     </div>
                 </div>
                 <%}%>
         </div>
-
     </div>
-
-
 
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>

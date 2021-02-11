@@ -49,7 +49,7 @@
                                 <th scope="col">#</th>
                                 <th scope="col">Picture</th>
                                 <th scope="col">Model</th>
-                                <th scope="col">Quantity</th>
+                                <th scope="col-3">Quantity</th>
                                 <th scope="col">Price</th>
                                 <th scope="col">Total</th>
                                 <th scope="col">Suppr</th>
@@ -87,21 +87,82 @@
                                         <th scope="row"></th>
                                         <td></td>
                                         <td></td>
+                                        <td class="total-box"> Frais de Port :
+                                        </td>
+                                        <td>
+                                            <form action='/update-shipping' method='POST'>
+                                                <div class="form-check">
+                                                    <% if (shippingCost.type === "standard") {%>
+                                                        <input class="form-check-input" type="radio" name="shippingtype" value="standard" checked>
+                                                        <%} else {%>
+                                                            <input class="form-check-input" type="radio" name="shippingtype" value="standard">
+                                                            <%}%>
+                                                                <label class="form-check-label" for="standard">Standard</label>
+                                                </div>
+                                                <div class="form-check">
+                                                    <% if (shippingCost.type === "express") {%>
+                                                        <input class="form-check-input" type="radio" name="shippingtype" value="express" checked>
+                                                        <%} else {%>
+                                                            <input class="form-check-input" type="radio" name="shippingtype" value="express">
+                                                            <%}%><label class="form-check-label" for="express">Express</label>
+                                                </div>
+                                                <div class="form-check">
+                                                    <% if (shippingCost.type === "relais") {%>
+                                                        <input class="form-check-input" type="radio" name="shippingtype" value="relais" checked>
+                                                        <%} else {%>
+                                                            <input class="form-check-input" type="radio" name="shippingtype" value="relais">
+                                                            <%}%><label class="form-check-label" for="express">Relais</label>
+                                                </div>
+                                                <button class="btn btn-outline-info btn-sm" name="button" value=<%=i%>><i class="fas fa-trash-alt"></i></button>
+                                            </form>
+                                        </td>
+                                        <td>
+                                            <% if (shippingCost.cost === 0) {%>
+                                                Offert
+                                                <%} else {%>
+                                                    <%=shippingCost.cost%>€
+                                                        <%}%>
+                                        </td>
+                                        <td>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row"></th>
+                                        <td></td>
+                                        <td></td>
+                                        <td>
+                                            <form action='/coupon' method='POST'>
+                                                <div class="form-group">
+                                                    <label for="exampleFormControlInput1">Coupon</label>
+                                                    <input type="text" class="form-control" name="couponCode">
+                                                </div>
+                                            </form>
+                                            <a href="/delete-coupon" class="btn btn-outline-info btn-sm" name="button"><i class="fas fa-sync-alt"></i></button>
+                                        </td>
+                                        <td>
+                                        </td>
+                                        <td>
+                                            <%=reduction%>
+                                        </td>
+                                        <td>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row"></th>
+                                        <td></td>
+                                        <td></td>
                                         <td></td>
                                         <td class="total-box">Total Basket : </td>
                                         <td>
-                                            <%
-                            var total = 0
-                            for (var i = 0; i<dataCardBike.length; i++) {
-                                total = total + (dataCardBike[i].price * dataCardBike[i].qty)
-                            }%>
-                                                <%=total%>€
+                                            <%=total+shippingCost.cost%>€
                                         </td>
-                                        <td></td>
+                                        <td>
+                                        </td>
                                     </tr>
                         </tbody>
                     </table>
                 </div>
+
                 <div class="row">
                     <div class="col-12 text-right">
                         <button id="checkout-button" class="btn btn-outline-info btn-sm btn-checkout" name="button-checkout">Checkout</button>
